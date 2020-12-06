@@ -36,7 +36,6 @@ class Items extends React.Component {
         <Query query={ALL_ITEMS_QUERY}>
           {/* The function that is a child of Query takes an argument of payload. Here we've destructured the payload into the three properties we're interested in using. */}
           {({ data, error, loading }) => {
-            console.log(data);
             if (loading) return <p> Loading...</p>;
             if (error) return <p>Error: {error.message}</p>;
             return (

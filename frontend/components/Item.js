@@ -4,6 +4,7 @@ import Link from "next/link";
 import Title from "./styles/Title";
 import ItemStyles from "./styles/ItemStyles";
 import PriceTag from "./styles/PriceTag";
+import DeleteItem from "./DeleteItem";
 import formatMoney from "../lib/formatMoney";
 
 class Item extends React.Component {
@@ -28,7 +29,7 @@ class Item extends React.Component {
             <a>Edit</a>
           </Link>
           <button>Add to Cart</button>
-          <button>Delete</button>
+          <DeleteItem id={item.id}>Delete this Item</DeleteItem>
         </div>
       </ItemStyles>
     );
