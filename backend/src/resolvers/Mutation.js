@@ -1,5 +1,6 @@
 const Mutations = {
   async createItem(parent, args, ctx, info) {
+    console.log("Item being created");
     const item = await ctx.db.mutation.createItem({ data: { ...args } }, info);
     return item;
   },

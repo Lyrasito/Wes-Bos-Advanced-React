@@ -69,7 +69,6 @@ class CreateItem extends React.Component {
           {(createItem, { loading, error, called, data }) => (
             <Form
               onSubmit={async (e) => {
-                console.log("Are we getting here?", data);
                 e.preventDefault();
                 const res = await createItem();
                 console.log(res);
