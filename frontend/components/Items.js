@@ -3,10 +3,12 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import styled from "styled-components";
 import Item from "./Item";
+import Pagination from "./Pagination";
+import { perPage } from "../config";
 
 const ALL_ITEMS_QUERY = gql`
-  query ALL_ITEMS_QUERY {
-    items {
+  query ALL_ITEMS_QUERY($skip: Int = 0, $first: Int = ${perPage}) {
+    items(skip: $skip, first: $first, orderBy: createdAt_DESC) {
       id
       title
       description
@@ -33,7 +35,14 @@ class Items extends React.Component {
   render() {
     return (
       <Center>
-        <Query query={ALL_ITEMS_QUERY}>
+        <Pagination page={this.props.page} />
+        <Query
+          fetchPolicy="network-only"
+          query={ALL_ITEMS_QUERY}
+          variables={{
+            skip: this.props.page * perPage - perPage,
+          }}
+        >
           {/* The function that is a child of Query takes an argument of payload. Here we've destructured the payload into the three properties we're interested in using. */}
           {({ data, error, loading }) => {
             if (loading) return <p> Loading...</p>;
@@ -47,6 +56,7 @@ class Items extends React.Component {
             );
           }}
         </Query>
+        <Pagination page={this.props.page} />
       </Center>
     );
   }
