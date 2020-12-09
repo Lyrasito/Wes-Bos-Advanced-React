@@ -5,20 +5,17 @@ import Form from "./styles/Form";
 import Error from "./ErrorMessage";
 import { CURRENT_USER_QUERY } from "./User";
 
-const SIGNIN_MUTATION = gql`
-  mutation SIGNIN_MUTATION($email: String!, $password: String!) {
-    signin(email: $email, password: $password) {
-      id
-      email
-      name
+const REQUEST_RESET_MUTATION = gql`
+  mutation REQUEST_RESET_MUTATION($email: String!) {
+    requestReset(email: $email) {
+      message
     }
   }
 `;
 
-class Signin extends React.Component {
+class RequestReset extends React.Component {
   state = {
     email: "",
-    password: "",
   };
   handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,23 +24,25 @@ class Signin extends React.Component {
   render() {
     return (
       <div>
-        <Mutation
-          mutation={SIGNIN_MUTATION}
-          variables={this.state}
-          refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-        >
-          {(signin, { loading, error }) => {
+        <Mutation mutation={REQUEST_RESET_MUTATION} variables={this.state}>
+          {(reset, { loading, error, called }) => {
             return (
               <Form
                 onSubmit={async (e) => {
                   e.preventDefault();
-                  const res = await signin();
-                  this.setState({ email: "", password: "" });
+                  const res = await reset();
+                  this.setState({ email: "" });
                 }}
               >
                 <fieldset disabled={loading} aria-busy={loading}>
-                  <h2>Sign in to your account</h2>
+                  <h2>Request a password reset</h2>
                   <Error error={error}></Error>
+                  {!error && !loading && called && (
+                    <p>
+                      Request sent successfully! Please check your email for a
+                      reset link.
+                    </p>
+                  )}
                   <label htmlFor="email">
                     Email{" "}
                     <input
@@ -54,17 +53,8 @@ class Signin extends React.Component {
                       onChange={this.handleChange}
                     />
                   </label>
-                  <label htmlFor="password">
-                    Password{" "}
-                    <input
-                      type="password"
-                      name="password"
-                      value={this.state.password}
-                      placeholder="password"
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                  <button type="submit">Sign In</button>
+
+                  <button type="submit">Send Request</button>
                 </fieldset>
               </Form>
             );
@@ -75,4 +65,4 @@ class Signin extends React.Component {
   }
 }
 
-export default Signin;
+export default RequestReset;

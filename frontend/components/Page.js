@@ -52,6 +52,7 @@ injectGlobal`
         text-decoration: none;
         color: ${theme.black}
     }
+  
 `;
 
 class Page extends React.Component {
