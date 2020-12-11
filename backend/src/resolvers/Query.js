@@ -28,7 +28,7 @@ const Query = {
 
     return ctx.db.query.users({}, info);
   },
-
+  cartItem: forwardTo("db"),
   /*
   async items(parent, args, ctx, info) {
     const items = await ctx.db.query.items();

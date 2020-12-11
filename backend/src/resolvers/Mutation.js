@@ -180,6 +180,31 @@ const Mutations = {
 
     return updatedUser;
   },
+  async addToCart(parent, { id }, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      throw new Error("You must be signed in");
+    }
+
+    const [existingCartItem] = await ctx.db.query.cartItems({
+      where: { user: { id: userId }, item: { id } },
+    });
+    if (existingCartItem) {
+      console.log("item is already in cart");
+      return ctx.db.mutation.updateCartItem({
+        where: { id: existingCartItem.id },
+        data: { quantity: existingCartItem.quantity + 1 },
+      });
+    }
+    const newItem = await ctx.db.mutation.createCartItem({
+      data: {
+        user: { connect: { id: userId } },
+        item: { connect: { id } },
+      },
+    });
+    console.log(newItem);
+    return newItem;
+  },
 };
 
 module.exports = Mutations;
