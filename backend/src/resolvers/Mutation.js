@@ -5,11 +5,25 @@ const {
 const jwt = require("jsonwebtoken");
 const { randomBytes } = require("crypto");
 const { promisify } = require("util");
+const { transport, makeANiceEmail } = require("../mail");
+const { hasPermission } = require("../utils");
 
 const Mutations = {
   async createItem(parent, args, ctx, info) {
     console.log("Item being created");
-    const item = await ctx.db.mutation.createItem({ data: { ...args } }, info);
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that");
+    }
+    const item = await ctx.db.mutation.createItem(
+      {
+        data: {
+          ...args,
+          //This is how to connect the Item to a User
+          user: { connect: { id: ctx.request.userId } },
+        },
+      },
+      info
+    );
     return item;
   },
 
@@ -23,13 +37,21 @@ const Mutations = {
     return item;
   },
   async deleteItem(parent, args, ctx, info) {
+    if (!ctx.request.user) {
+      throw new Error("You must be logged in");
+    }
     //const where = { id: args.id };
     //1.find item
     const item = await ctx.db.query.item(
       { where: { id: args.id } },
-      `{id title}`
+      `{id title user{ id }}`
     );
     //2. check if user owns item, or has permissions
+
+    if (item.user.id !== ctx.request.userId) {
+      hasPermission(ctx.request.user, ["ITEMDELETE", "ADMIN"]);
+    }
+
     //3. delete item
     return ctx.db.mutation.deleteItem({ where: { id: args.id } }, info);
   },
@@ -93,7 +115,18 @@ const Mutations = {
       where: { email: args.email },
       data: { resetToken, resetTokenExpiry },
     });
-    console.log(res);
+
+    const mailRes = await transport.sendMail({
+      from: "mariegoudy@gmail.com",
+      to: user.email,
+      subject: "Your Password Reset Link",
+      html: makeANiceEmail(
+        `Your password reset link is here! \n\n <a href='${
+          process.env.FRONTEND_URL
+        }/reset?resetToken=${resetToken}'>Click to reset password.</a>`
+      ),
+    });
+
     return { message: "Booyah" };
   },
 
@@ -129,6 +162,23 @@ const Mutations = {
       maxAge: 1000 * 60 * 60 * 24 * 365,
     });
     return savedUser;
+  },
+
+  async updatePermissions(parent, { userId, permissions }, ctx, info) {
+    if (!ctx.request.user) {
+      throw new Error("You must be logged in!");
+    }
+    hasPermission(ctx.request.user, ["ADMIN", "PERMISSIONUPDATE"]);
+    //const user = await ctx.db.query.user({ where: { id: userId } });
+    const updatedUser = await ctx.db.mutation.updateUser(
+      {
+        where: { id: userId },
+        data: { permissions: { set: permissions } },
+      },
+      info
+    );
+
+    return updatedUser;
   },
 };
 
