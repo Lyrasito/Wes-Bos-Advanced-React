@@ -212,13 +212,20 @@ const Mutations = {
     console.log(id);
     const cartItem = await ctx.db.query.cartItem(
       { where: { id } },
-      `{id, user{id}}`
+      `{id, quantity, user{id}}`
     );
     if (!cartItem) {
       throw new Error("Item not found");
     }
     if (cartItem.user.id !== userId) {
       throw new Error("That item doesn't belong to you.");
+    }
+    if (cartItem.quantity > 1) {
+      const newCartItem = await ctx.db.mutation.updateCartItem({
+        where: { id },
+        data: { quantity: cartItem.quantity - 1 },
+      });
+      return newCartItem;
     }
     return ctx.db.mutation.deleteCartItem({ where: { id } }, info);
   },

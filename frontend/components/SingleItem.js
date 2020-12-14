@@ -3,7 +3,10 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import styled from "styled-components";
 import Head from "next/head";
+import formatMoney from "../lib/formatMoney";
 import Error from "./ErrorMessage";
+import AddToCart from "./AddToCart";
+import SickButton from "./styles/SickButton";
 
 const SingleItemStyles = styled.div`
   max-width: 1200px;
@@ -22,6 +25,22 @@ const SingleItemStyles = styled.div`
     margin: 3rem;
     font-size: 2rem;
   }
+  button {
+    background: red;
+    color: white;
+    font-weight: 500;
+    border: 0;
+    border-radius: 0;
+    text-transform: uppercase;
+    font-size: 2rem;
+    padding: 0.8rem 1.5rem;
+    transform: skew(-2deg);
+    display: inline-block;
+    transition: all 0.5s;
+    &[disabled] {
+      opacity: 0.5;
+    }
+  }
 `;
 
 const SINGLE_ITEM_QUERY = gql`
@@ -38,7 +57,6 @@ const SINGLE_ITEM_QUERY = gql`
 
 class SingleItem extends React.Component {
   render() {
-    console.log(this.props.id);
     return (
       <div>
         <Query query={SINGLE_ITEM_QUERY} variables={{ id: this.props.id }}>
@@ -62,6 +80,8 @@ class SingleItem extends React.Component {
                 <div className="details">
                   <h2>Viewing {item.title}</h2>
                   <p>{item.description}</p>
+                  <p>{formatMoney(item.price)}</p>
+                  <AddToCart id={item.id} />
                 </div>
               </SingleItemStyles>
             );

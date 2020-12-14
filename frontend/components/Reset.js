@@ -38,59 +38,57 @@ class Reset extends React.Component {
   };
   render() {
     return (
-      <div>
-        <Mutation
-          mutation={RESET_MUTATION}
-          variables={{
-            resetToken: this.props.resetToken,
-            password: this.state.password,
-            confirmPassword: this.state.confirmPassword,
-          }}
-          refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-        >
-          {(reset, { loading, error, called }) => {
-            return (
-              <Form
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  const res = await reset();
-                  this.setState({ password: "", confirmPassword: "" });
-                }}
-              >
-                <fieldset disabled={loading} aria-busy={loading}>
-                  <h2>Enter your new password.</h2>
-                  <Error error={error}></Error>
-                  {!error && !loading && called && (
-                    <p>Password changed successfully!</p>
-                  )}
-                  <label htmlFor="password">
-                    Password{" "}
-                    <input
-                      type="password"
-                      name="password"
-                      value={this.state.password}
-                      placeholder="password"
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                  <label htmlFor="confirmPassword">
-                    Confirm Password{" "}
-                    <input
-                      type="password"
-                      name="confirmPassword"
-                      value={this.state.confirmPassword}
-                      placeholder="confirm password"
-                      onChange={this.handleChange}
-                    />
-                  </label>
+      <Mutation
+        mutation={RESET_MUTATION}
+        variables={{
+          resetToken: this.props.resetToken,
+          password: this.state.password,
+          confirmPassword: this.state.confirmPassword,
+        }}
+        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+      >
+        {(reset, { loading, error, called }) => {
+          return (
+            <Form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const res = await reset();
+                this.setState({ password: "", confirmPassword: "" });
+              }}
+            >
+              <fieldset disabled={loading} aria-busy={loading}>
+                <h2>Enter your new password.</h2>
+                <Error error={error}></Error>
+                {!error && !loading && called && (
+                  <p>Password changed successfully!</p>
+                )}
+                <label htmlFor="password">
+                  Password{" "}
+                  <input
+                    type="password"
+                    name="password"
+                    value={this.state.password}
+                    placeholder="password"
+                    onChange={this.handleChange}
+                  />
+                </label>
+                <label htmlFor="confirmPassword">
+                  Confirm Password{" "}
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={this.state.confirmPassword}
+                    placeholder="confirm password"
+                    onChange={this.handleChange}
+                  />
+                </label>
 
-                  <button type="submit">Send </button>
-                </fieldset>
-              </Form>
-            );
-          }}
-        </Mutation>
-      </div>
+                <button type="submit">Send </button>
+              </fieldset>
+            </Form>
+          );
+        }}
+      </Mutation>
     );
   }
 }

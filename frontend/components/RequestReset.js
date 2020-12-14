@@ -23,44 +23,42 @@ class RequestReset extends React.Component {
   };
   render() {
     return (
-      <div>
-        <Mutation mutation={REQUEST_RESET_MUTATION} variables={this.state}>
-          {(reset, { loading, error, called }) => {
-            return (
-              <Form
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  const res = await reset();
-                  this.setState({ email: "" });
-                }}
-              >
-                <fieldset disabled={loading} aria-busy={loading}>
-                  <h2>Request a password reset</h2>
-                  <Error error={error}></Error>
-                  {!error && !loading && called && (
-                    <p>
-                      Request sent successfully! Please check your email for a
-                      reset link.
-                    </p>
-                  )}
-                  <label htmlFor="email">
-                    Email{" "}
-                    <input
-                      type="email"
-                      name="email"
-                      value={this.state.email}
-                      placeholder="email"
-                      onChange={this.handleChange}
-                    />
-                  </label>
+      <Mutation mutation={REQUEST_RESET_MUTATION} variables={this.state}>
+        {(reset, { loading, error, called }) => {
+          return (
+            <Form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const res = await reset();
+                this.setState({ email: "" });
+              }}
+            >
+              <fieldset disabled={loading} aria-busy={loading}>
+                <h2>Request a password reset</h2>
+                <Error error={error}></Error>
+                {!error && !loading && called && (
+                  <p>
+                    Request sent successfully! Please check your email for a
+                    reset link.
+                  </p>
+                )}
+                <label htmlFor="email">
+                  Email{" "}
+                  <input
+                    type="email"
+                    name="email"
+                    value={this.state.email}
+                    placeholder="email"
+                    onChange={this.handleChange}
+                  />
+                </label>
 
-                  <button type="submit">Send Request</button>
-                </fieldset>
-              </Form>
-            );
-          }}
-        </Mutation>
-      </div>
+                <button type="submit">Send Request</button>
+              </fieldset>
+            </Form>
+          );
+        }}
+      </Mutation>
     );
   }
 }

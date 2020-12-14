@@ -34,6 +34,15 @@ const CART_ITEM_QUERY = gql`
 
 const CartItem = (props) => {
   const { item } = props.cartItem;
+  if (!item) {
+    return (
+      <CartItemStyles>
+        <p>This item has been removed</p>
+
+        <RemoveFromCart id={props.cartItem.id} />
+      </CartItemStyles>
+    );
+  }
   return (
     <CartItemStyles>
       <img src={item.image} width="100" alt={item.title} />
@@ -46,7 +55,7 @@ const CartItem = (props) => {
           </em>
         </p>
       </div>
-      <RemoveFromCart id={item.id} />
+      <RemoveFromCart id={props.cartItem.id} />
     </CartItemStyles>
   );
 };
