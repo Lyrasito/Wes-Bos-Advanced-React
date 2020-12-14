@@ -2,6 +2,7 @@ import { Query } from "react-apollo";
 import gql from "graphql-tag";
 import formatMoney from "../lib/formatMoney";
 import styled from "styled-components";
+import RemoveFromCart from "./RemoveFromCart";
 
 const CartItemStyles = styled.li`
   padding: 1rem 0;
@@ -45,6 +46,7 @@ const CartItem = (props) => {
           </em>
         </p>
       </div>
+      <RemoveFromCart id={item.id} />
     </CartItemStyles>
   );
 };

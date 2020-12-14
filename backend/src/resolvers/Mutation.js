@@ -202,8 +202,25 @@ const Mutations = {
         item: { connect: { id } },
       },
     });
-    console.log(newItem);
     return newItem;
+  },
+  async removeFromCart(parent, { id }, ctx, info) {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      throw new Error("You must be logged in");
+    }
+    console.log(id);
+    const cartItem = await ctx.db.query.cartItem(
+      { where: { id } },
+      `{id, user{id}}`
+    );
+    if (!cartItem) {
+      throw new Error("Item not found");
+    }
+    if (cartItem.user.id !== userId) {
+      throw new Error("That item doesn't belong to you.");
+    }
+    return ctx.db.mutation.deleteCartItem({ where: { id } }, info);
   },
 };
 
