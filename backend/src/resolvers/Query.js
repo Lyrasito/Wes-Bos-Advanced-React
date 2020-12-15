@@ -29,6 +29,26 @@ const Query = {
     return ctx.db.query.users({}, info);
   },
   cartItem: forwardTo("db"),
+  async order(parent, { id }, ctx, info) {
+    const { userId } = ctx.request;
+    if (!userId) throw new Error("You must be logged in");
+    const order = await ctx.db.query.order({ where: { id } }, info);
+    const ownsOrder = order.user.id === userId;
+    if (!ownsOrder) {
+      hasPermission(ctx.request.user, ["ADMIN"]);
+    }
+    return order;
+  },
+  async orders(parent, args, ctx, info) {
+    const { userId } = ctx.request;
+    const orders = await ctx.db.query.orders(
+      {
+        where: { user: { id: userId } },
+      },
+      info
+    );
+    return orders;
+  },
   /*
   async items(parent, args, ctx, info) {
     const items = await ctx.db.query.items();
