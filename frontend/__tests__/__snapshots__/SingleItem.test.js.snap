@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SingleItemComponent /> renders with proper data 1`] = `
+<h2>
+  Viewing 
+  dogs are best
+</h2>
+`;
+
+exports[`<SingleItemComponent /> renders with proper data 2`] = `
+<img
+  alt="dogs are best"
+  src="dog.jpg"
+/>
+`;
+
+exports[`<SingleItemComponent /> renders with proper data 3`] = `
+Array [
+  <p>
+    dogs
+  </p>,
+  <p>
+    $50
+  </p>,
+]
+`;
