@@ -26,53 +26,53 @@ class Signin extends React.Component {
   };
   render() {
     return (
-      <div>
-        <Mutation
-          mutation={SIGNIN_MUTATION}
-          variables={this.state}
-          refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-        >
-          {(signin, { loading, error }) => {
-            return (
-              <Form
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  const res = await signin();
-                  this.setState({ email: "", password: "" });
-                }}
-              >
-                <fieldset disabled={loading} aria-busy={loading}>
-                  <h2>Sign in to your account</h2>
-                  <Error error={error}></Error>
-                  <label htmlFor="email">
-                    Email{" "}
-                    <input
-                      type="email"
-                      name="email"
-                      value={this.state.email}
-                      placeholder="email"
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                  <label htmlFor="password">
-                    Password{" "}
-                    <input
-                      type="password"
-                      name="password"
-                      value={this.state.password}
-                      placeholder="password"
-                      onChange={this.handleChange}
-                    />
-                  </label>
-                  <button type="submit">Sign In</button>
-                </fieldset>
-              </Form>
-            );
-          }}
-        </Mutation>
-      </div>
+      <Mutation
+        mutation={SIGNIN_MUTATION}
+        variables={this.state}
+        refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+      >
+        {(signin, { loading, error }) => {
+          return (
+            <Form
+              data-test="form"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const res = await signin();
+                this.setState({ email: "", password: "" });
+              }}
+            >
+              <fieldset disabled={loading} aria-busy={loading}>
+                <h2>Sign in to your account</h2>
+                <Error error={error}></Error>
+                <label htmlFor="email">
+                  Email{" "}
+                  <input
+                    type="email"
+                    name="email"
+                    value={this.state.email}
+                    placeholder="email"
+                    onChange={this.handleChange}
+                  />
+                </label>
+                <label htmlFor="password">
+                  Password{" "}
+                  <input
+                    type="password"
+                    name="password"
+                    value={this.state.password}
+                    placeholder="password"
+                    onChange={this.handleChange}
+                  />
+                </label>
+                <button type="submit">Sign In</button>
+              </fieldset>
+            </Form>
+          );
+        }}
+      </Mutation>
     );
   }
 }
 
 export default Signin;
+export { SIGNIN_MUTATION };

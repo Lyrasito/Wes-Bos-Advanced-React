@@ -41,11 +41,11 @@ class Signup extends React.Component {
       >
         {(signup, { loading, error, data }) => (
           <Form
+            data-test="form"
             method="post"
             onSubmit={async (e) => {
               e.preventDefault();
               const res = await signup();
-              console.log(res);
               this.setState({ name: "", email: "", password: "" });
             }}
           >
@@ -92,3 +92,4 @@ class Signup extends React.Component {
 }
 
 export default Signup;
+export { SIGNUP_MUTATION };

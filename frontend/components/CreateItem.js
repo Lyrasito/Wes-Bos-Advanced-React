@@ -42,7 +42,6 @@ class CreateItem extends React.Component {
   };
 
   uploadFile = async (e) => {
-    console.log("uploading files...");
     const files = e.target.files;
     const data = new FormData();
     data.append("file", files[0]);
@@ -55,7 +54,7 @@ class CreateItem extends React.Component {
       }
     );
     const file = await res.json();
-    console.log(file);
+
     this.setState({
       image: file.secure_url,
       largeImage: file.eager[0].secure_url,
@@ -68,10 +67,10 @@ class CreateItem extends React.Component {
         <Mutation mutation={CREATE_ITEM_MUTATION} variables={this.state}>
           {(createItem, { loading, error, called, data }) => (
             <Form
+              data-test="form"
               onSubmit={async (e) => {
                 e.preventDefault();
                 const res = await createItem();
-                console.log(res);
                 Router.push({
                   pathname: "/item",
                   query: { id: res.data.createItem.id },
