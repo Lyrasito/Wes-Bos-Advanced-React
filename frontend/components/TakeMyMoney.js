@@ -45,32 +45,39 @@ class TakeMyMoney extends React.Component {
   render() {
     return (
       <User>
-        {({ data: { me } }) => (
-          <Mutation
-            mutation={CREATE_ORDER_MUTATION}
-            refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-          >
-            {(createOrder) => (
-              <StripeCheckout
-                amount={calcTotalPrice(me.cart)}
-                name="Sick Fits"
-                description={`Order of ${totalItems(me.cart)} items`}
-                image={
-                  me.cart.length && me.cart[0].item && me.cart[0].item.image
-                }
-                stripeKey="pk_test_51HydsBBCFzB75C4UMvlD4uq3773pFOxgJod2DnCH8aV5R8Iu8MOu0DtV9zgshI1UuD9riorukj7WdwB1sPufzfPn00f060As4Z"
-                currency="USD"
-                email={me.email}
-                token={(res) => this.onToken(res, createOrder)}
-              >
-                {this.props.children}
-              </StripeCheckout>
-            )}
-          </Mutation>
-        )}
+        {({ data: { me }, loading }) => {
+          if (loading) return null;
+          return (
+            <Mutation
+              mutation={CREATE_ORDER_MUTATION}
+              refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+            >
+              {(createOrder) => (
+                <StripeCheckout
+                  amount={calcTotalPrice(me.cart)}
+                  name="Sick Fits"
+                  description={`Order of ${totalItems(me.cart)} items`}
+                  image={
+                    me.cart.length && me.cart[0].item && me.cart[0].item.image
+                  }
+                  stripeKey="pk_test_51HydsBBCFzB75C4UMvlD4uq3773pFOxgJod2DnCH8aV5R8Iu8MOu0DtV9zgshI1UuD9riorukj7WdwB1sPufzfPn00f060As4Z"
+                  currency="USD"
+                  email={me.email}
+                  token={(res) => {
+                    console.log("takemymoney", res);
+                    this.onToken(res, createOrder);
+                  }}
+                >
+                  {this.props.children}
+                </StripeCheckout>
+              )}
+            </Mutation>
+          );
+        }}
       </User>
     );
   }
 }
 
 export default TakeMyMoney;
+export { CREATE_ORDER_MUTATION };

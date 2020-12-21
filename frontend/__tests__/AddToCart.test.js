@@ -82,6 +82,19 @@ describe("<AddToCartComponent />", () => {
     const {
       data: { me: me2 },
     } = await apolloClient.query({ query: CURRENT_USER_QUERY });
-    console.log(me.cart, me2.cart);
+
+    // console.log(me.cart, me2.cart);
+  });
+  it("changes from add to adding when clicked", async () => {
+    const wrapper = mount(
+      <MockedProvider mocks={mocks}>
+        <AddToCartComponent id="abc123" />
+      </MockedProvider>
+    );
+    await wait();
+    wrapper.update();
+    expect(wrapper.text()).toContain("Add to cart");
+    wrapper.find("button").simulate("click");
+    expect(wrapper.text()).toContain("Adding to cart");
   });
 });

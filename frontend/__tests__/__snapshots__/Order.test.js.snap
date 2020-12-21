@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OrderComponent /> renders and matches snapshot 1`] = `
+<div
+  className="OrderStyles-sc-4oqalm-0 camMij"
+  data-test="order"
+>
+  <SideEffect(Head)>
+    <Head />
+  </SideEffect(Head)>
+  <p>
+    <span>
+      Order Id:
+    </span>
+    <span>
+      singleorderid
+    </span>
+  </p>
+  <p>
+    <span>
+      Charge:
+    </span>
+    <span>
+      ch_123
+    </span>
+  </p>
+  <p>
+    <span>
+      Date:
+    </span>
+    <span>
+      March 31, 2018 8:00 PM
+    </span>
+  </p>
+  <p>
+    <span>
+      Total:
+    </span>
+    <span>
+      $400
+    </span>
+  </p>
+  <div
+    className="items"
+  >
+    <div
+      className="order-item"
+      key="77ee1755-9f56-4760-816b-dd266da805ab"
+    >
+      <img
+        alt="explicabo eaque necessitatibus sit suscipit omnis necessitatibus"
+        src="doloremque.jpg"
+      />
+      <div
+        className="item-details"
+      >
+        <h2>
+          explicabo eaque necessitatibus sit suscipit omnis necessitatibus
+        </h2>
+        <p>
+          Qty: 
+          1
+        </p>
+        <p>
+          Each: 
+          $42.34
+        </p>
+        <p>
+          Subtotal: 
+          $42.34
+        </p>
+        <p>
+          maiores ullam quae corporis qui aut nobis
+        </p>
+      </div>
+    </div>
+    <div
+      className="order-item"
+      key="ccad4806-718d-401c-bd82-c4e59edfec40"
+    >
+      <img
+        alt="sapiente nostrum aut corrupti sed consectetur soluta"
+        src="iusto.jpg"
+      />
+      <div
+        className="item-details"
+      >
+        <h2>
+          sapiente nostrum aut corrupti sed consectetur soluta
+        </h2>
+        <p>
+          Qty: 
+          1
+        </p>
+        <p>
+          Each: 
+          $42.34
+        </p>
+        <p>
+          Subtotal: 
+          $42.34
+        </p>
+        <p>
+          inventore laudantium dolor sint officiis qui dignissimos
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
